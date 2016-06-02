@@ -1,13 +1,12 @@
 {
   "name": "angular-ui-loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generic page loading control in plain JS + Angular",
   "main": "dist/loader.js",
   "keywords": [
     "loader",
     "ui",
     "angular",
-    "loader",
     "spinner",
     "loading"
   ],
@@ -32,5 +31,13 @@
     "rimraf": "^2.5.2",
     "temp": "^0.8.3"
   },
-  "dependencies": {}
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MomsFriendlyDevCo/angular-ui-loader.git"
+  },
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/MomsFriendlyDevCo/angular-ui-loader/issues"
+  },
+  "homepage": "https://github.com/MomsFriendlyDevCo/angular-ui-loader#readme"
 }
