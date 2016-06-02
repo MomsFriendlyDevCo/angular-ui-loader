@@ -1,14 +1,14 @@
 var async = require('async-chainable')
+var asyncExec = require('async-chainable-exec');
 var annotate = require('gulp-ng-annotate');
 var concat = require('gulp-concat');
-var copy = require('fs-copy-simple');
 var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var minifyCSS = require('gulp-minify-css');
+var ncp = require('ncp');
 var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
-var rimraf = require('rimraf');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 
@@ -70,19 +70,16 @@ gulp.task('server', ['build'], function() {
 
 gulp.task('gh-pages', ['build'], function(done) {
 	async()
-		.set('dir', './gh-pages')
-		.then(function(next) { rimraf(this.dir, next) })
-		.then(function(next) { fs.mkdir(this.dir, next) })
-		.then(function(next) { fs.mkdir(this.dir + '/dist', next) })
+		.use(asyncExec)
+		.exec('git clone -b gh-pages git@github.com:MomsFriendlyDevCo/angular-ui-loader.git ./gh-pages')
 		.parallel([
-			function(next) { copy('./demo/index.html', this.dir, next) },
-			function(next) { copy('./demo/app.css', this.dir, next) },
-			function(next) { copy('./demo/app.js', this.dir, next) },
-			function(next) { copy('./dist/loader.css', this.dir + '/dist', next) },
-			function(next) { copy('./dist/loader.js', this.dir + '/dist', next) },
-			function(next) { copy('./dist/ng-loader.js', this.dir + '/dist', next) },
+			next => ncp('./demo/index.html', './gh-pages', next),
+			next => ncp('./demo/app.css', './gh-pages', next),
+			next => ncp('./demo/app.js', './gh-pages', next),
+			next => ncp('./dist/loader.css', './gh-pages/dist', next),
+			next => ncp('./dist/loader.js', './gh-pages/dist', next),
+			next => ncp('./dist/ng-loader.js', './gh-pages/dist', next),
 		])
-		.then(function(next){ console.log('DIR IS', this.dir); next() })
 		.end(function(err) {
 			console.log("DONE WITH", err);
 			done();
