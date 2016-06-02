@@ -17,7 +17,9 @@
   "author": "Matt Carter <m@ttcarter.com> (https://github.com/hash-bang)",
   "license": "MIT",
   "devDependencies": {
+    "async-chainable": "^1.7.15",
     "express": "^4.13.4",
+    "fs-copy-simple": "^1.2.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.4",
@@ -26,6 +28,9 @@
     "gulp-notify": "^2.2.0",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
-    "gulp-watch": "^4.3.6"
-  }
+    "gulp-watch": "^4.3.6",
+    "rimraf": "^2.5.2",
+    "temp": "^0.8.3"
+  },
+  "dependencies": {}
 }
