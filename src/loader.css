@@ -8,12 +8,10 @@
 }
 
 /* .loader-bar {{{ */
-body:not(.loading-foreground):not(.loading-foreground-closing) .loader-bar {display: none}
-body.loading-foreground .loader-bar {display: block}
-
 .loader-bar {
 	height: 5px;
-	
+
+	display: none;
 	transition: opacity 0.5s ease-in;
 	width: 100vw;
 }
@@ -21,7 +19,7 @@ body.loading-foreground .loader-bar {display: block}
 .loader-bar::after,
 .loader-bar::before {
 	background-color: #ac348c;
-	
+
 	content: '';
 	display: block;
 	height: 100%;
@@ -33,7 +31,7 @@ body.loading-foreground .loader-bar {display: block}
 .loader-bar::after {
 	animation-duration: 20s;
 	animation-timing-function: ease-out;
-	
+
 	animation-name: loader-slide;
 	animation-iteration-count: 1;
 	transform: translate3d( -5vw, 0, 0 );
@@ -43,42 +41,36 @@ body.loading-foreground .loader-bar {display: block}
 	transform: translate3d( -100vw, 0, 0 );
 }
 
-body.loading-foreground-closing .loader-bar::before {
-	animation: 2s ease-out loader-slide-complete 1;
-	transform: translate3d( 0, 0, 0 );
+.loading-foreground .loader-bar,
+.loading-foreground-closing .loader-bar {
+	display: block;
 }
 
-body.loading-foreground-closing .loader-bar {
+.loading-foreground-closing .loader-bar {
 	opacity: 0;
-	transition: opacity 5s ease-out 1s;
+	transition: opacity 0.5s ease-out 0.5s;
+}
+
+.loading-foreground-closing .loader-bar::before {
+	animation: 1s ease-out loader-slide-complete 1;
+	transform: translate3d( 0, 0, 0 );
 }
 /* }}} */
 
 /* .loader-spinner {{{ */
-body:not(.loading):not(.loading-foreground-closing):not(.loading-background-closing) .loader-spinner {
-	display: none;
-}
-
-body.loading .loader-spinner,
-body.loading-background-closing,
-body.loading-foreground-closing
-{
-	display: block;
-}
-
-body.loading-background .loader-spinner {
-	opacity: 0.5;
-}
-
 .loader-spinner {
 	color: #555;
 	font-family: sans-serif;
 	margin: 15px;
-	
+
+	display: none;
 	height: 20px;
 	line-height: 20px;
 	padding: 0 25px;
-	transition: opacity 0.5s ease-in;
+	transition: opacity 0.4s ease-in;
+}
+.loading-background .loader-spinner {
+	opacity: 0.5;
 }
 
 .loader-spinner::before {
@@ -87,7 +79,7 @@ body.loading-background .loader-spinner {
 	border-color: #ac348c;
 	border-style: solid;
 	border-width: 2px;
-	
+
 	animation-name: loader-rotate;
 	animation-iteration-count: infinite;
 	border-bottom-color: transparent;
@@ -102,11 +94,16 @@ body.loading-background .loader-spinner {
 	width: 20px;
 }
 
-body.loading-foreground-closing:not(.loading-background) .loader-spinner,
-body.loading-background-closing .loader-spinner
-{
+.loading .loader-spinner,
+.loading-background-closing .loader-spinner,
+.loading-foreground-closing .loader-spinner {
+	display: block;
+}
+
+.loading-foreground-closing .loader-spinner,
+.loading-background-closing .loader-spinner {
 	opacity: 0;
-	transition: opacity 0.5s ease-out;
+	transition: opacity 0.4s ease-out;
 }
 /* }}} */
 
