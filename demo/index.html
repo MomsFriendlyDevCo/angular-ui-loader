@@ -54,11 +54,10 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header">Loading controls</div>
 					<ul class="list-group list-group-flush">
-						<li class="list-group-item"><a ng-click="test()">Test</a></li>
 						<li class="list-group-item"><a ng-click="$loader.start('debug1')">$loader.start("debug1")</a></li>
 						<li class="list-group-item"><a ng-click="$loader.stop('debug1')">$loader.stop("debug1")</a></li>
 						<li class="list-group-item"><a ng-click="$loader.startBackground('debug2')">$loader.startBackground("debug2")</a></li>
@@ -68,26 +67,26 @@
 					</ul>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<div class="card">
 					<div class="card-header">Loading status</div>
-					<div class="card-block text-xs-center">
+					<div class="card-block">
 						<div class="row">
-							<div class="col-xs-6">Loading</div>
+							<div class="col-xs-6 text-xs-right">Loading</div>
 							<div class="col-xs-6">
 								<div class="visible-loading"><i class="fa fa-check text-success"></i></div>
 								<div class="hidden-loading"><i class="fa fa-times text-danger"></i></div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-xs-6">Foreground</div>
+							<div class="col-xs-6 text-xs-right">Foreground</div>
 							<div class="col-xs-6">
 								<div class="visible-loading-foreground"><i class="fa fa-check text-success"></i></div>
 								<div class="hidden-loading-foreground"><i class="fa fa-times text-danger"></i></div>
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-xs-6">Background</div>
+							<div class="col-xs-6 text-xs-right">Background</div>
 							<div class="col-xs-6">
 								<div class="visible-loading-background"><i class="fa fa-check text-success"></i></div>
 								<div class="hidden-loading-background"><i class="fa fa-times text-danger"></i></div>

@@ -112,4 +112,18 @@ Loader = {
 		Loader.stop();
 		return Loader;
 	},
+
+
+	templateHTML: '<div class="loader-bar"></div><div class="loader-spinner"></div>',
+
+	/**
+	* Fired at the earliest possible point when we have the document.body addressable
+	* This function creates all the elements required for the loader to operate
+	*/
+	init: function() {
+		var elem = document.createElement('div');
+		elem.innerHTML = Loader.templateHTML;
+		document.body.appendChild(elem);
+	},
 };
+document.addEventListener('DOMContentLoaded', Loader.init);
