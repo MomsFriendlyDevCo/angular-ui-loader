@@ -1,11 +1,8 @@
 {
-  "name": "fixme",
-  "version": "0.0.0",
-  "description": "Generic page loading control in plain JS + Angular, designed to be as small as possible.",
+  "name": "angular-ui-loader",
+  "version": "1.0.0",
+  "description": "Generic page loading control in plain JS + Angular",
   "main": "dist/loader.js",
-  "scripts": {
-    "test": "mocha"
-  },
   "keywords": [
     "loader",
     "ui",
