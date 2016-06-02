@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MFDC-Loader demo</title>
+	<meta http-equiv="Content-Language" content="en"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta name="google" value="notranslate"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
+	<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+
+	<!-- Early loader -->
+	<link rel="stylesheet" href="dist/loader.css"/>
+	<script src="dist/loader.js"></script>
+
+	<!-- jQuery -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
+
+	<!-- Bootstrap -->
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha/js/bootstrap.min.js"></script>
+
+	<!-- FontAwesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css"/>
+	
+	<!-- Angular -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+
+	<!-- Angular loader component -->
+	<script src="dist/ng-loader.js"></script>
+
+	<!-- Demo app -->
+	<link rel="stylesheet" href="app.css"/>
+	<script src="app.js"></script>
+</head>
+<body ng-app="app" ng-controller="demoController">
+	<div class="container">
+		<div class="alert alert-info">
+			<a data-dismiss="alert" class="pull-right"><i class="fa fa-times"></i></a>
+			<p>An extremely simple example of the MFDC loader</p>
+			<p>
+				The loader has three parts:
+				<ul>
+					<li><strong>The CSS loader</strong> - an extremely dumb component which loads the base resources and injects the loader onto the page</li>
+					<li><strong>The JS loader</strong> - pure JS (no jQuery) controller for the loader</li>
+					<li><strong>Angular $loader (optional)</strong> - higher level controller via Angular</li>
+				</ul>
+			</p>
+			<p>As this demo is all about loading, its best viewed with network throttling turned on.</p>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-header">Loading controls</div>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item"><a ng-click="$loader.start('debug1')">$loader.start("debug1")</a></li>
+						<li class="list-group-item"><a ng-click="$loader.stop('debug1')">$loader.stop("debug1")</a></li>
+						<li class="list-group-item"><a ng-click="$loader.startBackground('debug2')">$loader.startBackground("debug2")</a></li>
+						<li class="list-group-item"><a ng-click="$loader.stop('debug2')">$loader.stop("debug2")</a></li>
+						<li class="list-group-item"><a ng-click="$loader.start('debug3', false)">$loader.start("debug3", false)</a></li>
+						<li class="list-group-item"><a ng-click="$loader.stop('debug3')">$loader.stop("debug3")</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-header">Loading status</div>
+					<div class="card-block">
+						<div class="row">
+							<div class="col-xs-6 text-xs-right">Loading</div>
+							<div class="col-xs-6">
+								<div class="visible-loading"><i class="fa fa-check text-success"></i></div>
+								<div class="hidden-loading"><i class="fa fa-times text-danger"></i></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6 text-xs-right">Foreground</div>
+							<div class="col-xs-6">
+								<div class="visible-loading-foreground"><i class="fa fa-check text-success"></i></div>
+								<div class="hidden-loading-foreground"><i class="fa fa-times text-danger"></i></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6 text-xs-right">Background</div>
+							<div class="col-xs-6">
+								<div class="visible-loading-background"><i class="fa fa-check text-success"></i></div>
+								<div class="hidden-loading-background"><i class="fa fa-times text-danger"></i></div>
+							</div>
+						</div>
+
+						<!-- NOTE: .(visible|hidden)-loading-(foreground|background)-closing are not supported classes. they are added in the demo only -->
+						<div class="row">
+							<div class="col-xs-6 text-xs-right">Foreground closing</div>
+							<div class="col-xs-6">
+								<div class="visible-loading-foreground-closing"><i class="fa fa-check text-success"></i></div>
+								<div class="hidden-loading-foreground-closing"><i class="fa fa-times text-danger"></i></div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-6 text-xs-right">Background closing</div>
+							<div class="col-xs-6">
+								<div class="visible-loading-background-closing"><i class="fa fa-check text-success"></i></div>
+								<div class="hidden-loading-background-closing"><i class="fa fa-times text-danger"></i></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

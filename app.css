@@ -1,0 +1,12 @@
+a { cursor: pointer }
+li.list-group-item { padding: 0 }
+li.list-group-item > a { padding: 10px; display: block; text-decoration: none }
+li.list-group-item:hover { background: #B8DFEA }
+
+/* Non-standard helper classes to display the (foreground|background) closing elements */
+body.loading-foreground-closing .hidden-loading-foreground-closing { display: none }
+body.loading-background-closing .hidden-loading-background-closing { display: none }
+body.loading-foreground-closing .visible-loading-foreground-closing { display: block }
+body.loading-background-closing .visible-loading-background-closing { display: block }
+body:not(.loading-foreground-closing) .visible-loading-foreground-closing { display: none }
+body:not(.loading-background-closing) .visible-loading-background-closing { display: none }
