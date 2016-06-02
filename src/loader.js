@@ -58,6 +58,14 @@ Loader = {
 	},
 
 	/**
+	* Determines if we are loading in the background rather than foreground loading
+	* @return {boolean} True if we are loading in the background, false if the foreground
+	*/
+	isBackground: function() {
+		return Object.keys(Loader.loadingBackground).length > 0;
+	},
+
+	/**
 	* Start the loading of an item by an optional ID
 	* Loading is only closed off when all ID's call the .stop() function
 	* @param {string} [id='default'] Optional ID to use
@@ -68,7 +76,10 @@ Loader = {
 		if (!id) id = 'default';
 		if (foreground === undefined) foreground = true;
 
+		var wasBackground = false;
+
 		if (foreground) {
+			wasBackground = Loader.isBackground();
 			Loader.loadingForeground[id] = true;
 		} else {
 			Loader.loadingBackground[id] = true;
@@ -76,6 +87,7 @@ Loader = {
 
 		var isForeground = Loader.isForeground();
 		document.body.classList.add('loading', isForeground ? 'loading-foreground' : 'loading-background');
+		if (wasBackground) Loader.timers.backgroundCloseout.setup(); // Manage transition from background -> foreground
 		document.body.classList.remove(isForeground ? 'loading-background' : 'loading-foreground');
 
 
@@ -93,6 +105,41 @@ Loader = {
 	},
 
 	/**
+	* Handle for various timers
+	* @var {Object}
+	*/
+	timers: {
+		foregroundCloseout: {
+			handle: null,
+			interval: 1000,
+			callback: function() {
+				document.body.classList.remove('loading-foreground-closing');
+			},
+			setup: function() {
+				document.body.classList.add('loading-foreground-closing');
+				Loader.timers.foregroundCloseout.handle = setTimeout(Loader.timers.foregroundCloseout.callback, Loader.timers.foregroundCloseout.interval);
+			},
+			teardown: function() {
+				cancelTimeout(Loader.timers.foregroundCloseout.handle);
+			},
+		},
+		backgroundCloseout: {
+			handle: null,
+			interval: 1000,
+			callback: function() {
+				document.body.classList.remove('loading-background-closing');
+			},
+			setup: function() {
+				document.body.classList.add('loading-background-closing');
+				Loader.timers.backgroundCloseout.handle = setTimeout(Loader.timers.backgroundCloseout.callback, Loader.timers.backgroundCloseout.interval);
+			},
+			teardown: function() {
+				cancelTimeout(Loader.timers.backgroundCloseout.handle);
+			},
+		},
+	},
+
+	/**
 	* Release an item from loading
 	* When all items are released the loader animation is stopped
 	* @param {string} [id='default'] Optional ID to use
@@ -100,14 +147,27 @@ Loader = {
 	*/
 	stop: function(id) {
 		if (!id) id = 'default';
-		if (Loader.loadingForeground[id]) delete Loader.loadingForeground[id];
-		if (Loader.loadingBackground[id]) delete Loader.loadingBackground[id];
 
-		if (!Loader.isActive()) {
+		var wasForeground = Loader.loadingForeground[id];
+		if (wasForeground) {
+			delete Loader.loadingForeground[id];
+		} else if (Loader.loadingBackground[id]) {
+			delete Loader.loadingBackground[id];
+		} else { // Unknown ID
+			return;
+		}
+
+		if (!Loader.isActive()) { // Nothing waiting
 			document.body.classList.remove('loading', 'loading-foreground', 'loading-background');
-		} else if (!Loader.isForeground()) {
+			if (wasForeground) {
+				Loader.timers.foregroundCloseout.setup();
+			} else {
+				Loader.timers.backgroundCloseout.setup();
+			}
+		} else if (!Loader.isForeground()) { // Transition from foreground -> background
 			document.body.classList.add('loading-background');
 			document.body.classList.remove('loading-foreground');
+			Loader.timers.foregroundCloseout.setup();
 		}
 
 		return Loader;
