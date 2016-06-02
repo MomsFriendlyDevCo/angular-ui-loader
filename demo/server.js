@@ -18,10 +18,7 @@ var express = require('express');
 var app = express();
 
 app.use('/dist', express.static(root + '/dist'));
-
-app.get('/', function(req, res) {
-	res.sendFile('index.html', {root: __dirname});
-});
+app.use('/', express.static(root + '/demo'));
 
 app.use(function(err, req, res, next){
 	console.error(err.stack);

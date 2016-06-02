@@ -1,6 +1,7 @@
 var annotate = require('gulp-ng-annotate');
 var concat = require('gulp-concat');
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var minifyCSS = require('gulp-minify-css');
 var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');

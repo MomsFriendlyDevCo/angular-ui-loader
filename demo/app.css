@@ -1,0 +1,4 @@
+a { cursor: pointer }
+li.list-group-item { padding: 0 }
+li.list-group-item > a { padding: 10px; display: block; text-decoration: none }
+li.list-group-item:hover { background: #B8DFEA }

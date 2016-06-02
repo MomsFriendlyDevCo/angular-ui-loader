@@ -1,0 +1,10 @@
+body.loading .hidden-loading { display: none }
+body.loading-foreground .hidden-loading-foreground { display: none }
+body.loading-background .hidden-loading-background { display: none }
+
+body.loading .visible-loading { display: block }
+body.loading-foreground .visible-loading-foreground { display: block }
+body.loading-background .visible-loading-background { display: block }
+body:not(.loading) .visible-loading { display: none }
+body:not(.loading-foreground) .visible-loading-foreground { display: none }
+body:not(.loading-background) .visible-loading-background { display: none }
