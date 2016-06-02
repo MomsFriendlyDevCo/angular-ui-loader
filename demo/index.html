@@ -26,7 +26,6 @@
 	
 	<!-- Angular -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-resource.js"></script>
 
 	<!-- Angular loader component -->
 	<script src="/dist/ng-loader.js"></script>
@@ -35,7 +34,7 @@
 	<link rel="stylesheet" href="app.css"/>
 	<script src="app.js"></script>
 </head>
-<body ng-app="app" ng-controller="redditController">
+<body ng-app="app" ng-controller="demoController">
 	<div class="container">
 		<div class="alert alert-info">
 			<a data-dismiss="alert" class="pull-right"><i class="fa fa-times"></i></a>
@@ -111,25 +110,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<hr/>
-
-	<div class="container hidden-loading">
-		<div class="row">
-			<table class="table table-bordered table-striped">
-				<thead>
-					<th>Score</th>
-					<th>Title</th>
-				</thead>
-				<tbody>
-					<tr ng-repeat="post in posts">
-						<td><a ng-click="selectPost(post)">{{post.score}}</a></td>
-						<td><a ng-click="selectPost(post)">{{post.title}}</a></td>
-					</tr>
-				</tbody>
-			</table>
 		</div>
 	</div>
 </body>
