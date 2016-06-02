@@ -24,7 +24,18 @@
 *	Loader.stop(id);
 */
 Loader = {
+	/**
+	* Storage of all ID's that we are waiting on in the foreground
+	* This object should be empty when there is no more foreground loading to do
+	* @var {Object}
+	*/
 	loadingForeground: {},
+
+	/**
+	* Storage of all ID's that we are waiting on in the background
+	* This object should be empty when there is no more background loading to do
+	* @var {Object}
+	*/
 	loadingBackground: {},
 
 	/**
@@ -114,11 +125,17 @@ Loader = {
 	},
 
 
+	/**
+	* The template to add to the page during init()
+	* @see init()
+	* @var {string}
+	*/
 	templateHTML: '<div class="loader-bar"></div><div class="loader-spinner"></div>',
 
 	/**
 	* Fired at the earliest possible point when we have the document.body addressable
-	* This function creates all the elements required for the loader to operate
+	* This function creates all the elements required for the loader to operate from templateHTML
+	* @see templateHTML
 	*/
 	init: function() {
 		var elem = document.createElement('div');
