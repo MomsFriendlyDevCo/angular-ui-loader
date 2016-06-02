@@ -1,14 +1,16 @@
 var async = require('async-chainable')
 var asyncExec = require('async-chainable-exec');
+var asyncLog = require('async-chainable-log');
 var annotate = require('gulp-ng-annotate');
 var concat = require('gulp-concat');
+var copy = require('fs-copy-simple');
 var fs = require('fs');
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var minifyCSS = require('gulp-minify-css');
-var ncp = require('ncp');
 var nodemon = require('gulp-nodemon');
 var notify = require('gulp-notify');
+var rimraf = require('rimraf');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 
@@ -68,20 +70,50 @@ gulp.task('server', ['build'], function() {
 		});
 });
 
+// Create ./gh-pages as a folder which contains a GitHub compatible demo
 gulp.task('gh-pages', ['build'], function(done) {
 	async()
 		.use(asyncExec)
+		.use(asyncLog)
+		.logDefaults({callback: gutil.log})
+		.execDefaults({
+			log: function(cmd) { gutil.log(gutil.colors.blue('[RUN]'), cmd.cmd + ' ' + cmd.params.join(' ')) },
+			out: function(line) { line.split('\n').forEach(l => gutil.log(gutil.colors.grey('[>>>]'), l)) },
+		})
+
+		.log('Removing existing gh-pages directory')
+		.then(next => rimraf('./gh-pages', next))
+
+		.log('Cloning gh-pages branch from GitHub')
 		.exec('git clone -b gh-pages git@github.com:MomsFriendlyDevCo/angular-ui-loader.git ./gh-pages')
+
+		.log('Cleaning up existing files')
 		.parallel([
-			next => ncp('./demo/index.html', './gh-pages', next),
-			next => ncp('./demo/app.css', './gh-pages', next),
-			next => ncp('./demo/app.js', './gh-pages', next),
-			next => ncp('./dist/loader.css', './gh-pages/dist', next),
-			next => ncp('./dist/loader.js', './gh-pages/dist', next),
-			next => ncp('./dist/ng-loader.js', './gh-pages/dist', next),
+			next => rimraf('./gh-pages/index.html', next),
+			next => rimraf('./gh-pages/app.css', next),
+			next => rimraf('./gh-pages/app.js', next),
+			next => rimraf('./gh-pages/dist/loader.css', next),
+			next => rimraf('./gh-pages/dist/loader.js', next),
+			next => rimraf('./gh-pages/dist/ng-loader.js', next),
 		])
-		.end(function(err) {
-			console.log("DONE WITH", err);
-			done();
-		});
+
+		.log('Copying new files')
+		.parallel([
+			next => copy('./demo/index.html', './gh-pages', next),
+			next => copy('./demo/app.css', './gh-pages', next),
+			next => copy('./demo/app.js', './gh-pages', next),
+			next => copy('./dist/loader.css', './gh-pages/dist', next),
+			next => copy('./dist/loader.js', './gh-pages/dist', next),
+			next => copy('./dist/ng-loader.js', './gh-pages/dist', next),
+		])
+
+		.log('Adding altered files into cache')
+		.then(next => { process.chdir('./gh-pages'); next() })
+		.exec('git status')
+		.exec('git add --all')
+
+		.log('Pushing new files to GitHub/gh-pages')
+		.exec('git push')
+
+		.end(done);
 });
