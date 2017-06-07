@@ -41,11 +41,13 @@ Installation
 Vanilla JavaScript + Core install
 ---------------------------------
 
+* Install the library with `npm i --save @momsfriendlydevco/angular-ui-loader`
+
 * Include the `dist/loader.css` and `dist/loader.js` files as high as possible within your `<head/>` element:
 
 ```html
-<link rel="stylesheet" href="node_modules/angular-ui-loader/dist/loader.css"/>
-<script src="node_modules/angular-ui-loader/dist/loader.js"></script>
+<link rel="stylesheet" href="node_modules/@momsfriendlydevco/angular-ui-loader/dist/loader.css"/>
+<script src="node_modules/@momsfriendlydevco/angular-ui-loader/dist/loader.js"></script>
 ```
 
 
@@ -57,7 +59,7 @@ Angular install (optional)
 * Include the `dist/ng-loader.js` after the main Angular module has loaded:
 
 ```html
-<script src="node_modules/angular-ui-loader/dist/ng-loader.js"></script>
+<script src="node_modules/@momsfriendlydevco/angular-ui-loader/dist/ng-loader.js"></script>
 ```
 
 * Add the `angular-ui-loader` module into the `angular.app()` call:
