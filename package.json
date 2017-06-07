@@ -1,6 +1,6 @@
 {
-  "name": "angular-ui-loader",
-  "version": "1.0.1",
+  "name": "@momsfriendlydevco/angular-ui-loader",
+  "version": "1.0.2",
   "description": "Generic page loading control in plain JS + Angular",
   "main": "dist/loader.js",
   "keywords": [
