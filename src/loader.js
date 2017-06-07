@@ -23,29 +23,50 @@
 *	// Do complex stuff
 *	Loader.stop(id);
 */
-Loader = {
+var Loader = {
+	/**
+	* Fast access boolean to determine if we are doing any loading (foreground or background)
+	* @var {boolean}
+	*/
+	loading: false,
+
+	/**
+	* Fast access boolean to determine if we are doing specifically foreground loading
+	* @var {boolean}
+	* @see updateStates()
+	*/
+	loadingForeground: false,
+
+	/**
+	* Fast access boolean to determine if we are doing specifically background loading
+	* @var {boolean}
+	* @see updateStates()
+	*/
+	loadingBackground: false,
+
 	/**
 	* Storage of all ID's that we are waiting on in the foreground
 	* This object should be empty when there is no more foreground loading to do
 	* @var {Object}
+	* @see updateStates()
 	*/
-	loadingForeground: {},
+	waitingForeground: {},
 
 	/**
 	* Storage of all ID's that we are waiting on in the background
 	* This object should be empty when there is no more background loading to do
 	* @var {Object}
 	*/
-	loadingBackground: {},
+	waitingBackground: {},
 
 	/**
 	* Returns if the loader is active
 	* @return {boolean} Whether the loader is active
 	*/
 	isActive: function() {
-		return (
-			Object.keys(Loader.loadingForeground).length ||
-			Object.keys(Loader.loadingBackground).length
+		return Boolean(
+			Object.keys(Loader.waitingForeground).length ||
+			Object.keys(Loader.waitingBackground).length
 		);
 	},
 
@@ -54,7 +75,7 @@ Loader = {
 	* @return {boolean} True if we are loading in the foreground, false if the background
 	*/
 	isForeground: function() {
-		return Object.keys(Loader.loadingForeground).length > 0;
+		return Object.keys(Loader.waitingForeground).length > 0;
 	},
 
 	/**
@@ -62,7 +83,7 @@ Loader = {
 	* @return {boolean} True if we are loading in the background, false if the foreground
 	*/
 	isBackground: function() {
-		return Object.keys(Loader.loadingBackground).length > 0;
+		return Object.keys(Loader.waitingBackground).length > 0;
 	},
 
 	/**
@@ -80,15 +101,16 @@ Loader = {
 
 		if (foreground) {
 			wasBackground = Loader.isBackground();
-			Loader.loadingForeground[id] = true;
+			Loader.waitingForeground[id] = true;
 		} else {
-			Loader.loadingBackground[id] = true;
+			Loader.waitingBackground[id] = true;
 		}
 
 		var isForeground = Loader.isForeground();
 		document.body.classList.add('loading', isForeground ? 'loading-foreground' : 'loading-background');
 		if (wasBackground) Loader.timers.backgroundCloseout.setup(); // Manage transition from background -> foreground
 		document.body.classList.remove(isForeground ? 'loading-background' : 'loading-foreground');
+		Loader.updateStates();
 
 
 		return Loader;
@@ -102,6 +124,15 @@ Loader = {
 	*/
 	startBackground: function(id) {
 		return Loader.start(id, false);
+	},
+
+	/**
+	* Update the fast-access state variables
+	*/
+	updateStates: function() {
+		Loader.loading = Loader.isActive();
+		Loader.loadingForeground = Loader.isForeground();
+		Loader.loadingBackground = Loader.isBackground();
 	},
 
 	/**
@@ -148,11 +179,11 @@ Loader = {
 	stop: function(id) {
 		if (!id) id = 'default';
 
-		var wasForeground = Loader.loadingForeground[id];
+		var wasForeground = Loader.waitingForeground[id];
 		if (wasForeground) {
-			delete Loader.loadingForeground[id];
-		} else if (Loader.loadingBackground[id]) {
-			delete Loader.loadingBackground[id];
+			delete Loader.waitingForeground[id];
+		} else if (Loader.waitingBackground[id]) {
+			delete Loader.waitingBackground[id];
 		} else { // Unknown ID
 			return;
 		}
@@ -169,6 +200,7 @@ Loader = {
 			document.body.classList.remove('loading-foreground');
 			Loader.timers.foregroundCloseout.setup();
 		}
+		Loader.updateStates();
 
 		return Loader;
 	},
@@ -178,8 +210,8 @@ Loader = {
 	* @return {Object} This chainable loader object
 	*/
 	clear: function() {
-		Loader.loadingForeground = {};
-		Loader.loadingBackground = {};
+		Loader.waitingForeground = {};
+		Loader.waitingBackground = {};
 		Loader.stop();
 		return Loader;
 	},

@@ -79,6 +79,18 @@ See the [demo HTML file](demo/index.html) for an example file layout.
 API
 ===
 
+Loader.loading
+--------------
+Boolean indicating if we are doing any loading.
+
+Loader.loadingBackground
+------------------------
+Boolean indicating if we are doing any background loading.
+
+Loader.loadingForeground
+------------------------
+Boolean indicating if we are doing any foreground loading.
+
 Loader.isActive()
 -----------------
 Returns true if the loader is active for either foreground or background loading.
@@ -109,6 +121,28 @@ Loader.clear()
 Clear all ID's from loading.
 
 There is more functionality to tweak inside the [JavaScript](src/loader.js) file. See its internal documentation for details.
+
+
+Angular API
+===========
+In al cases the Angular API mirrors the regular API with the exception that the class is instanciated as `$loader`:
+
+```javascript
+angular
+.module('app')
+.component('myComponent', {
+	controller: function($loader) {
+
+		// Start the load indicator
+		$loader.start($scope.$id);
+
+		// Do something complicated
+		SomePromise
+			.then(data => {})
+			.finally(()=> $loader.stop($scope.$id))
+	},
+});
+```
 
 
 CSS classes
