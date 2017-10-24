@@ -60,6 +60,19 @@ var Loader = {
 	waitingBackground: {},
 
 	/**
+	* Custom bindings to execute when certain events occur
+	* This is a really low-rent implementation of an event omtiter
+	* Replace these noop functions with your own if you wish to bind to custom events
+	* @var {Object}
+	*/
+	on: {
+		start: id => {},
+		stateUpdate: state => {},
+		stop: id => {},
+		stopAll: ()=> {},
+	},
+
+	/**
 	* Returns if the loader is active
 	* @return {boolean} Whether the loader is active
 	*/
@@ -106,6 +119,8 @@ var Loader = {
 			Loader.waitingBackground[id] = true;
 		}
 
+		Loader.on.start(id);
+
 		var isForeground = Loader.isForeground();
 		document.body.classList.add('loading', isForeground ? 'loading-foreground' : 'loading-background');
 		if (wasBackground) Loader.timers.backgroundCloseout.setup(); // Manage transition from background -> foreground
@@ -130,9 +145,13 @@ var Loader = {
 	* Update the fast-access state variables
 	*/
 	updateStates: function() {
-		Loader.loading = Loader.isActive();
-		Loader.loadingForeground = Loader.isForeground();
-		Loader.loadingBackground = Loader.isBackground();
+		var isLoading = Loader.isActive();
+		var isForeground = Loader.isForeground();
+		var isBackground = Loader.isBackground();
+		Loader.loading = isLoading;
+		Loader.loadingForeground = isForeground;
+		Loader.loadingBackground = isBackground;
+		Loader.on.stateUpdate({loading: isLoading, foreground: isForeground, background: isBackground});
 	},
 
 	/**
@@ -188,6 +207,8 @@ var Loader = {
 			return;
 		}
 
+		Loader.on.stop(id);
+
 		if (!Loader.isActive()) { // Nothing waiting
 			document.body.classList.remove('loading', 'loading-foreground', 'loading-background');
 			if (wasForeground) {
@@ -195,6 +216,7 @@ var Loader = {
 			} else {
 				Loader.timers.backgroundCloseout.setup();
 			}
+			Loader.on.stopAll();
 		} else if (!Loader.isForeground()) { // Transition from foreground -> background
 			document.body.classList.add('loading-background');
 			document.body.classList.remove('loading-foreground');

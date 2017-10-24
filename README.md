@@ -171,3 +171,16 @@ The base CSS of this component supports the following CSS classes:
 * Foreground and Background loading events are mutually exclusive. A `body` element will not have `loading-foreground` and `loading-background` applied at the same time.
 * There are no "loaded" styles. If you want this behaviour use `not(body.loading)` instead.
 * The module applies the `.loading-(foreground|background)-closing` style temporarily (default is 1s) to allow closing CSS transitions. The main `loading-(foreground|background)` style does *not* remain attached, if you wish for the element to remain visible you will have to add an override for visibility for the `loading-*-closing` styles. See the [stylesheet](src/loader.css) for examples.
+
+
+Angular Events
+==============
+When using Angular the following events are also emitted via the `$rootScope.$broadcast()` function:
+
+
+| Event                | Parameters | Description                                    |
+|----------------------|------------|------------------------------------------------|
+| `$loaderStart`       | `(id)`     | Emitted when a specific start request is fired |
+| `$loaderStop`        | `(id)`     | Emitted when a specific stop request is fired  |
+| `$loaderStopAll`     | `()`       | Emitted when all loaders have stopped          |
+| `$loaderUpdateState` | `(states)` | Emitted when we update the loading state. `states` is an object with three boolean properties: `loading`, `foreground`, `background` |

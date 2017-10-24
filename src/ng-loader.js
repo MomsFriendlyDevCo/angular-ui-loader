@@ -7,6 +7,12 @@
 */
 
 angular.module('angular-ui-loader', [])
-.service('$loader', function() {
+.service('$loader', function($rootScope, $timeout) {
+	// Remap internal events to $rootScope.$broadcast
+	Loader.on.start = id => $timeout(()=> $rootScope.$broadcast('$loaderStart', id));
+	Loader.on.stateUpdate = state => $timeout(()=> $rootScope.$broadcast('$loaderStateUpdate', state));
+	Loader.on.stop = id => $timeout(()=> $rootScope.$broadcast('$loaderStop', id));
+	Loader.on.stopAll = ()=> $timeout(()=> $rootScope.$broadcast('$loaderStopAll'));
+
 	return Loader;
 });
