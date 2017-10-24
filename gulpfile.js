@@ -1,4 +1,3 @@
-var annotate = require('gulp-ng-annotate');
 var babel = require('gulp-babel');
 var cleanCSS = require('gulp-clean-css');
 var ghPages = require('gulp-gh-pages');
@@ -41,7 +40,10 @@ gulp.task('serve', ['build'], function() {
 gulp.task('js-loader', () => {
 	gulp.src('./src/loader.js')
 		.pipe(rename('loader.js'))
-		.pipe(babel({presets: ['es2015']}))
+		.pipe(babel({
+			presets: ['es2015'],
+			plugins: ['angularjs-annotate'],
+		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist'))
 });
@@ -49,8 +51,10 @@ gulp.task('js-loader', () => {
 gulp.task('js-ng-loader', ()=> {
 	gulp.src('./src/ng-loader.js')
 		.pipe(rename('ng-loader.js'))
-		.pipe(babel({presets: ['es2015']}))
-		.pipe(annotate())
+		.pipe(babel({
+			presets: ['es2015'],
+			plugins: ['angularjs-annotate'],
+		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist'))
 });
