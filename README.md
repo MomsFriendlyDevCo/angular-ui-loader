@@ -1,11 +1,11 @@
-angular-ui-loader
-=================
+@momsfriendlydevco/loader
+=========================
 Generic page loading control in plain JS / Angular / Vue, designed to be as small as possible.
 
 This module ships with an Angular wrapper (`$loader`) but can be addressed either as `$loader` (Angular) or `Loader` (vanilla JavaScript).
 
 
-[Demo available here](http://momsfriendlydevco.github.io/angular-ui-loader)
+[Demo available here](http://momsfriendlydevco.github.io/loader)
 
 
 This component was built by the really cool guys at [Moms Friendly Development Company](http://mfdc.biz).
