@@ -1,7 +1,7 @@
 {
-  "name": "@momsfriendlydevco/angular-ui-loader",
-  "version": "1.1.0",
-  "description": "Generic page loading control in plain JS + Angular",
+  "name": "@momsfriendlydevco/loader",
+  "version": "1.2.0",
+  "description": "Generic page loading control in plain JS / Angular / Vue",
   "main": "dist/loader.js",
   "keywords": [
     "loader",
