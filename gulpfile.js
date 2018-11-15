@@ -3,13 +3,15 @@ var cleanCSS = require('gulp-clean-css');
 var ghPages = require('gulp-gh-pages');
 var gulp = require('gulp');
 var nodemon = require('gulp-nodemon');
+var preprocess = require('gulp-preprocess');
 var rename = require('gulp-rename');
 var rimraf = require('rimraf');
+var rollup = require('gulp-rollup');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 
 gulp.task('default', ['serve']);
-gulp.task('build', ['build:loader', 'build:ngLoader', 'build:css']);
+gulp.task('build', ['build:loader', 'build:ngLoader', 'build:vueLoader', 'build:css']);
 
 gulp.task('serve', ['build'], function() {
 	var monitor = nodemon({
@@ -41,7 +43,6 @@ gulp.task('build:loader', () => {
 		.pipe(rename('loader.js'))
 		.pipe(babel({
 			presets: ['@babel/env'],
-			plugins: ['angularjs-annotate'],
 		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist'))
@@ -55,6 +56,25 @@ gulp.task('build:ngLoader', ()=> {
 			plugins: ['angularjs-annotate'],
 		}))
 		.pipe(uglify())
+		.pipe(gulp.dest('./dist'))
+});
+
+gulp.task('build:vueLoader', ()=> {
+	gulp.src(['./src/vue-loader.js', './src/loader.css'])
+		.pipe(preprocess())
+		.pipe(rollup({
+			allowRealFiles: true,
+			input: './src/vue-loader.js',
+			output: {
+				format: 'es',
+			},
+			plugins: [
+				require('rollup-plugin-postcss')({
+					minimize: true,
+				}),
+			],
+		}))
+		.pipe(rename('vue-loader.js'))
 		.pipe(gulp.dest('./dist'))
 });
 

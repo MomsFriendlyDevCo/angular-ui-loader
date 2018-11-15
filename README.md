@@ -1,6 +1,6 @@
 angular-ui-loader
 =================
-Generic page loading control in plain JS + Angular, designed to be as small as possible.
+Generic page loading control in plain JS / Angular / Vue, designed to be as small as possible.
 
 This module ships with an Angular wrapper (`$loader`) but can be addressed either as `$loader` (Angular) or `Loader` (vanilla JavaScript).
 
@@ -74,6 +74,15 @@ var app = angular.module("app", [
 
 
 See the [demo HTML file](demo/index.html) for an example file layout.
+
+
+Vue install (optional)
+----------------------
+
+```javascript
+import $loader from '@momsfriendlydevco/loader/dist/vue-loader.js';
+Vue.use($loader);
+```
 
 
 

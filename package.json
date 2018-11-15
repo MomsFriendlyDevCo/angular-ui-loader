@@ -25,12 +25,15 @@
     "gulp-gh-pages": "^0.5.4",
     "gulp-minify-css": "^1.2.4",
     "gulp-nodemon": "^2.4.1",
+    "gulp-preprocess": "^3.0.1",
     "gulp-rename": "^1.4.0",
+    "gulp-rollup": "^2.16.2",
     "gulp-uglify": "^3.0.1",
     "gulp-util": "^3.0.8",
     "gulp-watch": "^5.0.1",
     "jquery": "^3.3.1",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "rollup-plugin-postcss": "^1.6.2"
   },
   "repository": {
     "type": "git",
