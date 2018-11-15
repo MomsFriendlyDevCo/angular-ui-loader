@@ -8,9 +8,8 @@ var rimraf = require('rimraf');
 var uglify = require('gulp-uglify');
 var watch = require('gulp-watch');
 
-gulp.task('default', ['build']);
-gulp.task('build', ['js', 'css']);
-gulp.task('js', ['js-loader', 'js-ng-loader']);
+gulp.task('default', ['serve']);
+gulp.task('build', ['build:loader', 'build:ngLoader', 'build:css']);
 
 gulp.task('serve', ['build'], function() {
 	var monitor = nodemon({
@@ -37,42 +36,34 @@ gulp.task('serve', ['build'], function() {
 });
 
 
-gulp.task('js-loader', () => {
+gulp.task('build:loader', () => {
 	gulp.src('./src/loader.js')
 		.pipe(rename('loader.js'))
 		.pipe(babel({
-			presets: ['es2015'],
+			presets: ['@babel/env'],
 			plugins: ['angularjs-annotate'],
 		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist'))
 });
 
-gulp.task('js-ng-loader', ()=> {
+gulp.task('build:ngLoader', ()=> {
 	gulp.src('./src/ng-loader.js')
 		.pipe(rename('ng-loader.js'))
 		.pipe(babel({
-			presets: ['es2015'],
+			presets: ['@babel/env'],
 			plugins: ['angularjs-annotate'],
 		}))
 		.pipe(uglify())
 		.pipe(gulp.dest('./dist'))
 });
 
-gulp.task('css', ()=> {
+gulp.task('build:css', ()=> {
 	gulp.src('./src/*.css')
 		.pipe(rename('loader.css'))
 		.pipe(cleanCSS())
 		.pipe(gulp.dest('./dist'))
 });
-
-gulp.task('css:min', ()=>
-	gulp.src('./src/*.css')
-		.pipe(rename('loader.min.css'))
-		.pipe(sass())
-		.pipe(cleanCSS())
-		.pipe(gulp.dest('./dist'))
-);
 
 gulp.task('gh-pages', ['build'], function() {
 	rimraf.sync('./gh-pages');
